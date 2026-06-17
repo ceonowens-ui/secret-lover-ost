@@ -179,7 +179,7 @@ async function handleTrack(request, env, url) {
     return new Response("unauthorized", { status: 401, headers: corsHeaders(request, env) });
   }
 
-  const obj = await env.AUDIO.get(file);
+  const obj = await env.AUDIO.get(`OST/${file}`);
   if (!obj) return new Response("file not found", { status: 404, headers: corsHeaders(request, env) });
 
   const headers = new Headers(corsHeaders(request, env));
