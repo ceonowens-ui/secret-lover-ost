@@ -124,7 +124,7 @@ body{font-family:"Noto Serif TC",-apple-system,"PingFang TC","Microsoft JhengHei
       <div class="cover-wrap"><img src="images/cover.png" alt="秘密關係 OST"></div>
       <div class="album-meta">
         <div class="t1">秘密關係 Original Soundtrack</div>
-        <div class="t2">CÉON · 21 首 · 影集原聲帶</div>
+        <div class="t2">21 首 · 影集原聲帶</div>
       </div>
       <div class="prog-section">
         <div class="prog-wrap" id="prog-wrap"><div class="prog-fill" id="prog-fill"></div><div class="prog-thumb" id="prog-thumb"></div></div>
@@ -247,6 +247,7 @@ let cur=0,playing=false,seeking=false,selectedPlan='299';
 const UKEY='slo-unlock-v1';
 function isUnlocked(){try{return !!(JSON.parse(localStorage.getItem(UKEY)||'null')||{}).unlocked}catch(e){return false}}
 function setUnlocked(data){localStorage.setItem(UKEY,JSON.stringify(Object.assign({unlocked:true},data)))}
+function getUnlockData(){try{return JSON.parse(localStorage.getItem(UKEY)||'null')||{}}catch(e){return {}}}
 function trackLocked(t){return !t.free && !isUnlocked();}
 
 const fmt=s=>(!s||!isFinite(s))?'0:00':`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
@@ -278,7 +279,13 @@ function onTrackClick(i){
 /* ====== 播放控制 ====== */
 function playIdx(i){
   cur=i;
-  audio.src='songs/'+encodeURIComponent(TRACKS[i].file);
+  const t=TRACKS[i];
+  if(t.free){
+    audio.src='songs/'+encodeURIComponent(t.file);
+  }else{
+    const u=getUnlockData();
+    audio.src=CONFIG.WORKER_API_BASE+'/track?file='+encodeURIComponent(t.file)+'&email='+encodeURIComponent(u.email||'')+'&code='+encodeURIComponent(u.code||'');
+  }
   audio.play().catch(()=>{});
   playing=true;
   updateListState();updatePlayBtn();
@@ -358,7 +365,7 @@ async function redeem(){
     const res=await fetch(CONFIG.WORKER_API_BASE+'/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,code})});
     const data=await res.json();
     if(data.ok){
-      setUnlocked({email,product:data.product||selectedPlan});
+      setUnlocked({email,code,product:data.product||selectedPlan});
       showToast('解鎖成功！');
       buildList();updateCTA();
       switchTab('player');

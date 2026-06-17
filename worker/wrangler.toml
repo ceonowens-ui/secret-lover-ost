@@ -1,0 +1,22 @@
+name = "secret-lover-ost-api"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# 填入 `npx wrangler kv namespace create secret_lover_codes` 回傳的 id
+kv_namespaces = [
+  { binding = "CODES", id = "REPLACE_WITH_KV_NAMESPACE_ID" }
+]
+
+[[r2_buckets]]
+binding = "AUDIO"
+bucket_name = "secret-lover-ost-audio"
+
+[vars]
+# 寄信顯示的寄件人，要用你在 Resend 已驗證的網域
+RESEND_FROM = "秘密關係 OST <onboarding@resend.dev>"
+# 允許呼叫這個 API 的前端網域（GitHub Pages 網址 + 本機測試網址）
+ALLOWED_ORIGINS = "https://ceonowens-ui.github.io,http://localhost:8000,http://127.0.0.1:8000"
+
+# 以下兩個用 secret 設定，不要寫在這個檔案裡：
+#   npx wrangler secret put STRIPE_WEBHOOK_SECRET
+#   npx wrangler secret put RESEND_API_KEY

@@ -1,1 +1,5 @@
 .DS_Store
+private-audio/
+songs/0[3-9]_*.mp3
+songs/1[0-9]_*.mp3
+songs/2[01]_*.mp3
