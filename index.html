@@ -253,7 +253,7 @@ const fmt=s=>(!s||!isFinite(s))?'0:00':`${Math.floor(s/60)}:${String(Math.floor(
 
 function lockIconSVG(){return `<div class="lock-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>`;}
 function playIconSmallSVG(){return `<div class="play-icon-sm"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>`;}
-function dlIconSVG(file){return `<a class="dl-icon" href="audio/${encodeURIComponent(file)}" download onclick="event.stopPropagation()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>`;}
+function dlIconSVG(file){return `<a class="dl-icon" href="songs/${encodeURIComponent(file)}" download onclick="event.stopPropagation()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>`;}
 
 /* ====== 歌單渲染 ====== */
 function buildList(){
@@ -278,7 +278,7 @@ function onTrackClick(i){
 /* ====== 播放控制 ====== */
 function playIdx(i){
   cur=i;
-  audio.src='audio/'+encodeURIComponent(TRACKS[i].file);
+  audio.src='songs/'+encodeURIComponent(TRACKS[i].file);
   audio.play().catch(()=>{});
   playing=true;
   updateListState();updatePlayBtn();
